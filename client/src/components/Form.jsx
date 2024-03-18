@@ -51,8 +51,9 @@ const Form = () => {
             headers: {
               "content-type": "application/json",
               "Content-Type": "application/json",
-              "X-RapidAPI-Key": process.env.VITE_XRapidAPIKey,
-              "X-RapidAPI-Host": process.env.VITE_XRapidAPIHost,
+              "X-RapidAPI-Key":
+                "5ac32962efmsh29fefff5b5cbb7fp17d87fjsn0481790259eb",
+              "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
             },
           }
         );
@@ -64,8 +65,9 @@ const Form = () => {
               fields: "*",
             },
             headers: {
-              "X-RapidAPI-Key": process.env.VITE_XRapidAPIKey,
-              "X-RapidAPI-Host": process.env.VITE_XRapidAPIHost,
+              "X-RapidAPI-Key":
+                "5ac32962efmsh29fefff5b5cbb7fp17d87fjsn0481790259eb",
+              "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
             },
           }
         );
