@@ -17,6 +17,7 @@ const Form = () => {
     sourceCode: "",
   });
   const handleSubmit = async () => {
+    console.log("submit");
     const timestamp = new Date().toLocaleString();
     try {
       const res = await axios.post(
@@ -28,8 +29,7 @@ const Form = () => {
       );
       sucessNotify(res.data.message);
     } catch (error) {
-      errorNotify(error.response.data.message);
-      console.log(error.response.data.message);
+      errorNotify(error.response.message);
     }
   };
   const handleRun = async () => {
