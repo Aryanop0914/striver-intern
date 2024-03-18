@@ -8,7 +8,8 @@ const Form = () => {
   const sucessNotify = (message) => toast.success(message);
   const errorNotify = (message) => toast.error(message);
   const defaultOption = languages[0].vs;
-  const [language_id, setLanguageId] = useState();
+  const defaultOptionl = languages[0].id;
+  const [language_id, setLanguageId] = useState(defaultOptionl);
   const [output, setOutput] = useState(" ");
   const [userdata, setUserData] = useState({
     username: "",
@@ -33,6 +34,7 @@ const Form = () => {
     }
   };
   const handleRun = async () => {
+    console.log(language_id);
     const data = {
       language_id: language_id,
       source_code: userdata.sourceCode,
