@@ -6,7 +6,7 @@ const cors = require("cors");
 const client = require("./utils/clients");
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://striver-intern.vercel.app/",
     credentials: true,
   })
 );
