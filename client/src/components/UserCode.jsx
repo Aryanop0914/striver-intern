@@ -10,7 +10,7 @@ const UserCode = () => {
   const getSourceCode = async () => {
     try {
       const res = await axios.get(
-        `${process.env.VITE_BACKEND_URL}/getSourceCode/${userId}`
+        `https://striver-intern.onrender.com/store/getSourceCode/${userId}`
       );
       setData(res.data.data);
     } catch (error) {

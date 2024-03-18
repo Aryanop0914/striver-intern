@@ -21,7 +21,7 @@ const Form = () => {
     const timestamp = new Date().toLocaleString();
     try {
       const res = await axios.post(
-        `${process.env.VITE_BACKEND_URL}/store`,
+        `https://striver-intern.onrender.com/store`,
         { ...userdata, timestamp },
         {
           "content-type": "application/json",
