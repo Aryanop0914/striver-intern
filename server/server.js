@@ -6,7 +6,7 @@ const cors = require("cors");
 const client = require("./utils/clients");
 app.use(
   cors({
-    origin: "https://striver-intern.vercel.app/",
+    origin: "*",
     credentials: true,
   })
 );
