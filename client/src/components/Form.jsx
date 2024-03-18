@@ -38,7 +38,11 @@ const Form = () => {
       source_code: userdata.sourceCode,
       stdin: userdata.stdInput,
     };
-    if (data.source_code != null || data.stdin != null) {
+    if (
+      data.source_code != null ||
+      data.stdin != null ||
+      data.language_id != null
+    ) {
       try {
         const response = await axios.post(
           "https://judge0-ce.p.rapidapi.com/submissions",
