@@ -1,0 +1,189 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Editor from "@monaco-editor/react";
+import languages from "../constants/language";
+import toast from "react-hot-toast";
+import axios from "axios";
+const Form = () => {
+  const sucessNotify = (message) => toast.success(message);
+  const errorNotify = (message) => toast.error(message);
+  const defaultOption = languages[0].vs;
+  const [language_id, setLanguageId] = useState();
+  const [output, setOutput] = useState(" ");
+  const [userdata, setUserData] = useState({
+    username: "",
+    language: defaultOption,
+    stdInput: "",
+    sourceCode: "",
+  });
+  const handleSubmit = async () => {
+    const timestamp = new Date().toLocaleString();
+    try {
+      const res = await axios.post(
+        `${process.env.VITE_BACKEND_URL}/store`,
+        { ...userdata, timestamp },
+        {
+          "content-type": "application/json",
+        }
+      );
+      sucessNotify(res.data.message);
+    } catch (error) {
+      errorNotify(error.response.data.message);
+      console.log(error.response.data.message);
+    }
+  };
+  const handleRun = async () => {
+    const data = {
+      language_id: language_id,
+      source_code: userdata.sourceCode,
+      stdin: userdata.stdInput,
+    };
+    if (data.source_code != null || data.stdin != null) {
+      try {
+        const response = await axios.post(
+          "https://judge0-ce.p.rapidapi.com/submissions",
+          data,
+          {
+            params: {
+              base64_encoded: "false",
+              fields: "*",
+            },
+            headers: {
+              "content-type": "application/json",
+              "Content-Type": "application/json",
+              "X-RapidAPI-Key": process.env.VITE_XRapidAPIKey,
+              "X-RapidAPI-Host": process.env.VITE_XRapidAPIHost,
+            },
+          }
+        );
+        const output = await axios.get(
+          `https://judge0-ce.p.rapidapi.com/submissions/${response.data.token}`,
+          {
+            params: {
+              base64_encoded: "false",
+              fields: "*",
+            },
+            headers: {
+              "X-RapidAPI-Key": process.env.VITE_XRapidAPIKey,
+              "X-RapidAPI-Host": process.env.VITE_XRapidAPIHost,
+            },
+          }
+        );
+        if (output.data.stderr == null) {
+          setOutput(output.data.stdout);
+          sucessNotify("Complied successfully!!");
+        } else {
+          setOutput(output.data.stderr);
+          errorNotify("Something Went Wrong!!");
+        }
+      } catch (error) {
+        errorNotify(error.response.data.message);
+      }
+    } else {
+      errorNotify("Fill all the Inputs!!");
+    }
+  };
+  return (
+    <div className="flex flex-col items-center justify-center w-full h-screen">
+      <h1 className="mb-4 mt-20 text-3xl font-bold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-6xl dark:text-white">
+        TUF (SDE Intern)
+      </h1>
+      <p className="mb-2 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
+        Aryan Patel
+      </p>
+      <div className="flex items-center mx-auto w-full px-12 mb-4 mt-4">
+        <div className="relative w-full flex flex-row">
+          <input
+            type="text"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mr-2"
+            placeholder="Username"
+            onChange={(e) => {
+              setUserData({ ...userdata, username: e.target.value });
+            }}
+            required
+          />
+          <select
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mr-2"
+            onChange={(e) => {
+              setUserData({ ...userdata, language: e.target.value });
+            }}
+          >
+            {languages.map((language) => (
+              <option
+                value={language.vs}
+                key={language.id}
+                onClick={() => {
+                  setLanguageId(language.id);
+                }}
+              >
+                {language.name}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mr-2"
+            placeholder="stdInput"
+            onChange={(e) => {
+              setUserData({ ...userdata, stdInput: e.target.value });
+            }}
+            required
+          />
+        </div>
+      </div>
+      <div className="flex flex-row w-full">
+        <div className="flex flex-row basis-3/4 pl-6">
+          <Editor
+            height="70vh"
+            key={userdata.language}
+            width={`100%`}
+            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            language={userdata.language}
+            defaultValue="// some comment"
+            onChange={(value) => {
+              setUserData({ ...userdata, sourceCode: value });
+            }}
+          />
+        </div>
+        <div className="flex flex-col basis-1/4 px-4">
+          <div className="flex flex-row  w-full h-3/4">
+            <textarea
+              id="message"
+              rows="4"
+              className="block p-2.5 w-full text-sm text-white-900 bg-black-50 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Your Output"
+              value={output}
+              disabled
+            />
+          </div>
+          <div className="flex justify-between mt-4 mx-12">
+            <button
+              type="button"
+              onClick={handleRun}
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Run
+            </button>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-center mx-auto w-full">
+        <Link
+          to={"/entries"}
+          className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        >
+          View Entries
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default Form;
