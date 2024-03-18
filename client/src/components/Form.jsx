@@ -122,7 +122,7 @@ const Form = () => {
             }}
           >
             {languages.map((language) => (
-              <option value={language.vs} key={language.id}>
+              <option value={language.id} key={language.id}>
                 {language.name}
               </option>
             ))}
