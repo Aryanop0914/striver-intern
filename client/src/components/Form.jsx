@@ -116,7 +116,7 @@ const Form = () => {
               const selectedLanguageId = e.target.value;
               setLanguageId(selectedLanguageId);
               const selectedLanguage = languages.find(
-                (language) => language.id === selectedLanguageId
+                (language) => language.id === e.target.value
               );
               setUserData({ ...userdata, language: selectedLanguage.vs });
             }}
