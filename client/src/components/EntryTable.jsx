@@ -10,7 +10,7 @@ const EntryTable = () => {
   const getUserData = async () => {
     try {
       const response = await axios.get(
-        `https://striver-intern.onrender.com/store/getinfo`,
+        `https://striver-intern.onrender.com/getinfo`,
         {
           params: { page, limit: 5 },
           headers: { "content-type": "application/json" },
