@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 import Loader from "./Loader";
 const EntryTable = () => {
   const [loading, setLoading] = useState(false);
+  const sucessNotify = (message) => toast.success(message);
+  const errorNotify = (message) => toast.error(message);
   const [userdetails, setUserDetails] = useState([]);
   useEffect(() => {
     getUserData();
@@ -18,10 +21,11 @@ const EntryTable = () => {
         }
       );
       setUserDetails(response.data.data);
+      sucessNotify("Data fetched Successfully");
       setLoading(false);
     } catch (error) {
+      errorNotify("Something Went Wrong!!");
       setLoading(false);
-      console.log(error);
     }
   };
   return (

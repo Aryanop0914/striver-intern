@@ -20,6 +20,7 @@ const languages = [
   {
     id: 63,
     name: "JavaScript (Node.js 12.14.0)",
+    vs: "javascript",
     is_archived: false,
   },
   {

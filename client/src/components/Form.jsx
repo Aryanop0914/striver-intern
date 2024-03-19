@@ -23,6 +23,7 @@ const Form = () => {
   const handleSubmit = async () => {
     const timestamp = new Date().toLocaleString();
     try {
+      console.log(userdata);
       setLoading(true);
       const res = await axios.post(
         `https://striver-intern.onrender.com/store`,
@@ -121,11 +122,11 @@ const Form = () => {
             onChange={(e) => {
               const selectedLanguageId = e.target.value;
               setLanguageId(selectedLanguageId);
-              const selectedLanguage = languages.find(
-                (language) => language.id === selectedLanguageId
+              const selectedLanguage = languages.filter(
+                ({ id }) => id == selectedLanguageId
               );
               if (selectedLanguage) {
-                setUserData({ ...userdata, language: selectedLanguage.vs });
+                setUserData({ ...userdata, language: selectedLanguage[0].vs });
               }
             }}
           >
@@ -166,7 +167,7 @@ const Form = () => {
             <textarea
               id="message"
               rows="4"
-              className="block p-2.5 w-full text-sm text-white-900 bg-black-50 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:bg-black-700 dark:border-black-600 dark:placeholder-black-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block p-2.5 w-full text-sm text-white-900 bg-black-50 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:bg-black dark:border-gray-600 dark:placeholder-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Your Output"
               value={output}
               disabled

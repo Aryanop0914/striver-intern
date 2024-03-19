@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import Loader from "./Loader";
+import toast from "react-hot-toast";
 import axios from "axios";
 const UserCode = () => {
   const [loading, setLoading] = useState(false);
+  const sucessNotify = (message) => toast.success(message);
+  const errorNotify = (message) => toast.error(message);
   const { userId } = useParams();
   const [data, setData] = useState({});
   useEffect(() => {
@@ -17,9 +20,10 @@ const UserCode = () => {
         `https://striver-intern.onrender.com/getSourceCode/${userId}`
       );
       setData(res.data.data);
+      sucessNotify("Data fetched Suceessfully");
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      errorNotify("Something Went Wrong!!");
       setLoading(false);
     }
   };
