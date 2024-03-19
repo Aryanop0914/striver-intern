@@ -11,9 +11,12 @@ const EntryTable = () => {
   const getUserData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/getinfo`, {
-        headers: { "content-type": "application/json" },
-      });
+      const response = await axios.get(
+        `https://striver-intern.onrender.com/getinfo`,
+        {
+          headers: { "content-type": "application/json" },
+        }
+      );
       setUserDetails(response.data.data);
       setLoading(false);
     } catch (error) {
