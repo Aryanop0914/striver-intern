@@ -17,16 +17,17 @@ const prisma = new PrismaClient();
 app.post("/store", async (req, res) => {
   try {
     const { username, language, stdInput, sourceCode, timestamp } = req.body;
-    if (
-      username == "" ||
-      language == "" ||
-      stdInput == "" ||
-      sourceCode == ""
-    ) {
+    if (username == "" || language == "" || sourceCode == "") {
       throw new ApiError(400, "All the fields Are Necessary");
     }
     const data = await prisma.user.create({
-      data: { username, language, stdInput, sourceCode, createdAt: timestamp },
+      data: {
+        username,
+        language,
+        stdInput: stdInput,
+        sourceCode,
+        createdAt: timestamp,
+      },
     });
     res
       .status(200)
