@@ -38,6 +38,7 @@ const Form = () => {
     }
   };
   const handleRun = async () => {
+    setOutput(" ");
     const data = {
       language_id: language_id,
       source_code: userdata.sourceCode,
