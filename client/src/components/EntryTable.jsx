@@ -5,20 +5,15 @@ import Loader from "./Loader";
 const EntryTable = () => {
   const [loading, setLoading] = useState(false);
   const [userdetails, setUserDetails] = useState([]);
-  const [page, setPage] = useState(1);
   useEffect(() => {
     getUserData();
-  }, [page]);
+  }, []);
   const getUserData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://striver-intern.onrender.com/getinfo`,
-        {
-          params: { page, limit: 5 },
-          headers: { "content-type": "application/json" },
-        }
-      );
+      const response = await axios.get(`http://localhost:5000/getinfo`, {
+        headers: { "content-type": "application/json" },
+      });
       setUserDetails(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -93,46 +88,6 @@ const EntryTable = () => {
           </tbody>
         </table>
       </div>
-      <nav
-        aria-label="Page navigation example"
-        className="flex flex-row justify-center mt-10"
-      >
-        <ul className="inline-flex -space-x-px text-base h-10">
-          <li
-            onClick={() => {
-              setPage((prev) => Math.max(prev - 1, 1));
-            }}
-          >
-            <p className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-              Previous
-            </p>
-          </li>
-          {[1, 2, 3, 4, 5].map((pageNumber) => (
-            <li
-              key={pageNumber}
-              onClick={() => setPage(pageNumber)}
-              className={`${
-                page === pageNumber
-                  ? "bg-gray-700 text-white"
-                  : "text-white bg-gray-800"
-              } border border-gray-700 hover:bg-gray-700 hover:text-white`}
-            >
-              <p className="flex items-center justify-center px-4 h-10 leading-tight">
-                {pageNumber}
-              </p>
-            </li>
-          ))}
-          <li
-            onClick={() => {
-              setPage((prev) => prev + 1);
-            }}
-          >
-            <p className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-              Next
-            </p>
-          </li>
-        </ul>
-      </nav>
       {loading && (
         <div className="overlay fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
           <Loader />

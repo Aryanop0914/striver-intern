@@ -34,7 +34,8 @@ const Form = () => {
       setLoading(false);
       sucessNotify(res.data.message);
     } catch (error) {
-      errorNotify(error.response.message);
+      setLoading(false);
+      errorNotify("Something Went Wrong!!");
     }
   };
   const handleRun = async () => {
@@ -44,11 +45,7 @@ const Form = () => {
       source_code: userdata.sourceCode,
       stdin: userdata.stdInput,
     };
-    if (
-      data.source_code != null ||
-      data.stdin != null ||
-      data.language_id != null
-    ) {
+    if (data.source_code != null || data.language_id != null) {
       try {
         setLoading(true);
         const response = await axios.post(
@@ -92,7 +89,8 @@ const Form = () => {
           errorNotify("Something Went Wrong!!");
         }
       } catch (error) {
-        errorNotify(error.response.data.message);
+        setLoading(false);
+        errorNotify("Something Went Wrong!!");
       }
     } else {
       setLoading(false);
@@ -137,8 +135,9 @@ const Form = () => {
               </option>
             ))}
           </select>
-          <input
+          <textarea
             type="text"
+            rows="1"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mr-2"
             placeholder="stdInput"
             onChange={(e) => {

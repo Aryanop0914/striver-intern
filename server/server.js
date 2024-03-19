@@ -53,13 +53,7 @@ app.get("/getinfo", async (req, res) => {
           )
         );
     }
-
-    const { page, limit } = req.query;
-    const data = await prisma.user.findMany({
-      skip: (page - 1) * limit,
-      take: limit * 1,
-    });
-
+    const data = await prisma.user.findMany();
     await client.set("info", JSON.stringify(data));
     await client.expire("info", 30);
 
