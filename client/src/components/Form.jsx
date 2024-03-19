@@ -18,7 +18,6 @@ const Form = () => {
     sourceCode: "",
   });
   const handleSubmit = async () => {
-    console.log("submit");
     const timestamp = new Date().toLocaleString();
     try {
       const res = await axios.post(
@@ -34,7 +33,6 @@ const Form = () => {
     }
   };
   const handleRun = async () => {
-    console.log(language_id);
     const data = {
       language_id: language_id,
       source_code: userdata.sourceCode,
