@@ -60,7 +60,7 @@ const Form = () => {
               "content-type": "application/json",
               "Content-Type": "application/json",
               "X-RapidAPI-Key":
-                "4a26b10084msh5ebdf2e16ed7a98p136d3djsnfd2145dd2f00",
+                "5ac32962efmsh29fefff5b5cbb7fp17d87fjsn0481790259eb",
               "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
             },
           }
@@ -74,7 +74,7 @@ const Form = () => {
             },
             headers: {
               "X-RapidAPI-Key":
-                "4a26b10084msh5ebdf2e16ed7a98p136d3djsnfd2145dd2f00",
+                "5ac32962efmsh29fefff5b5cbb7fp17d87fjsn0481790259eb",
               "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
             },
           }
