@@ -12,6 +12,6 @@ model User {
   username   String
   language   String
   stdInput   String
-  sourceCode String
+  sourceCode String @db.VarChar(10000)
   createdAt  String
 }
