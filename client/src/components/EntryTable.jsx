@@ -25,7 +25,7 @@ const EntryTable = () => {
     }
   };
   return (
-    <div className="w-full p-12">
+    <div className="w-full p-12 h-screen">
       <Link to="/" className="top-8 left-8">
         <svg
           className="w-6 h-6 text-gray-500 dark:text-gray-400 cursor-pointer"
