@@ -4,7 +4,10 @@ import Editor from "@monaco-editor/react";
 import languages from "../constants/language";
 import toast from "react-hot-toast";
 import axios from "axios";
+import Loader from "./Loader";
+
 const Form = () => {
+  const [loading, setLoading] = useState(false);
   const sucessNotify = (message) => toast.success(message);
   const errorNotify = (message) => toast.error(message);
   const defaultOption = languages[0].vs;
@@ -20,6 +23,7 @@ const Form = () => {
   const handleSubmit = async () => {
     const timestamp = new Date().toLocaleString();
     try {
+      setLoading(true);
       const res = await axios.post(
         `https://striver-intern.onrender.com/store`,
         { ...userdata, timestamp },
@@ -27,6 +31,7 @@ const Form = () => {
           "content-type": "application/json",
         }
       );
+      setLoading(false);
       sucessNotify(res.data.message);
     } catch (error) {
       errorNotify(error.response.message);
@@ -44,6 +49,7 @@ const Form = () => {
       data.language_id != null
     ) {
       try {
+        setLoading(true);
         const response = await axios.post(
           "https://judge0-ce.p.rapidapi.com/submissions",
           data,
@@ -77,15 +83,18 @@ const Form = () => {
         );
         if (output.data.stderr == null) {
           setOutput(output.data.stdout);
+          setLoading(false);
           sucessNotify("Complied successfully!!");
         } else {
           setOutput(output.data.stderr);
+          setLoading(false);
           errorNotify("Something Went Wrong!!");
         }
       } catch (error) {
         errorNotify(error.response.data.message);
       }
     } else {
+      setLoading(false);
       errorNotify("Fill all the Inputs!!");
     }
   };
@@ -189,6 +198,11 @@ const Form = () => {
           View Entries
         </Link>
       </div>
+      {loading && (
+        <div className="overlay fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 };

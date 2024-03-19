@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Loader from "./Loader";
 const EntryTable = () => {
+  const [loading, setLoading] = useState(false);
   const [userdetails, setUserDetails] = useState([]);
   const [page, setPage] = useState(1);
   useEffect(() => {
@@ -9,6 +11,7 @@ const EntryTable = () => {
   }, [page]);
   const getUserData = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(
         `https://striver-intern.onrender.com/getinfo`,
         {
@@ -17,7 +20,9 @@ const EntryTable = () => {
         }
       );
       setUserDetails(response.data.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -128,6 +133,11 @@ const EntryTable = () => {
           </li>
         </ul>
       </nav>
+      {loading && (
+        <div className="overlay fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 };

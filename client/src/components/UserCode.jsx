@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Editor from "@monaco-editor/react";
+import Loader from "./Loader";
 import axios from "axios";
 const UserCode = () => {
+  const [loading, setLoading] = useState(false);
   const { userId } = useParams();
   const [data, setData] = useState({});
   useEffect(() => {
@@ -10,12 +12,15 @@ const UserCode = () => {
   }, [userId]);
   const getSourceCode = async () => {
     try {
+      setLoading(true);
       const res = await axios.get(
         `https://striver-intern.onrender.com/getSourceCode/${userId}`
       );
       setData(res.data.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
   return (
@@ -44,6 +49,11 @@ const UserCode = () => {
         language={data.language}
         defaultValue={data.sourceCode}
       />
+      {loading && (
+        <div className="overlay fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 };
