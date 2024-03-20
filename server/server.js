@@ -54,7 +54,15 @@ app.get("/getinfo", async (req, res) => {
           )
         );
     }
-    const data = await prisma.user.findMany();
+    const data = await prisma.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        language: true,
+        stdInput: true,
+        createdAt: true,
+      },
+    });
     await client.set("info", JSON.stringify(data));
     await client.expire("info", 30);
 
